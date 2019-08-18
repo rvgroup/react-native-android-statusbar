@@ -44,21 +44,21 @@ public class StatusBarModule extends ReactContextBaseJavaModule {
     }
 
     void setStatusColor(final int color){
-        getCurrentActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(Build.VERSION.SDK_INT >= 21){
-                    Window window = getCurrentActivity().getWindow();
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                    window.setStatusBarColor(color);
+        final Activity activity = getCurrentActivity();
 
+        if (activity != null) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(Build.VERSION.SDK_INT >= 21){
+                        Window window = activity.getWindow();
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.setStatusBarColor(color);
+                    }
                 }
-
-            }
-        });
-
+            });
+        }
     }
-
 
     @ReactMethod
     public void hideStatusBar(){
